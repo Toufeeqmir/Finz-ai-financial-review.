@@ -154,4 +154,5 @@ The tests cover CSV/XLSX parsing, invalid rows, rule categorization, manual corr
 - The transaction explorer uses server-side pagination/search endpoints; the overview currently returns the small assignment ledger for interactive client-side filtering.
 - A running MongoDB and installed dependencies are required for the complete upload/correction workflow. They were not installed or provisioned in this environment.
 #   F i n z - a i - f i n a n c i a l - r e i v e w .  
+ #   F i n z - a i - f i n a n c i a l - r e v i e w .  
  
