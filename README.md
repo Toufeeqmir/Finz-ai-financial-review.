@@ -243,7 +243,7 @@ Open the exact **Local** URL printed by Vite, normally http://localhost:5173. If
 
 | Variable | Used by | Required | Meaning |
 |---|---|---:|---|
-| FINZ_MONGODB_URI | Server | Atlas only | Set this for Atlas; otherwise the API falls back to local finz_review. |
+| FINZ_MONGODB_URI | Server | Required on Render; optional locally | MongoDB Atlas URI. Only local development falls back to localhost; Render reports a clear setup error if this variable is missing or points to localhost. |
 | PORT | Server | No | API port; defaults to 5001 (Render provides its own port). |
 | CLIENT_URL | Server | No | Allowed browser origin(s), comma-separated; local example is http://localhost:5173. |
 | GROQ_API_KEY | Server | No | Enables optional Groq categorization/explanations. Keep it server-side. |
