@@ -3,7 +3,10 @@ dist/
 coverage/
 .env
 .env.*
+.env.example
 !.env.example
 uploads/
 npm-debug.log*
 .DS_Store
+
+server/.env.example
