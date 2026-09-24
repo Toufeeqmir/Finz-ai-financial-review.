@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: finz-review-api
+    env: node
+    rootDir: finz-review-app/server
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: FINZ_MONGODB_URI
+        sync: false
+      - key: CLIENT_URL
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_MODEL
+        value: llama-3.3-70b-versatile
+  - type: web
+    name: finz-review-client
+    env: static
+    rootDir: finz-review-app/client
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false

@@ -1,0 +1,3 @@
+const { CATEGORIES, PNL } = require('./categorization');
+function makeCorrection(t,category,{reason='',correctedBy='workspace user',now=new Date()}={}){if(!CATEGORIES.includes(category))throw Object.assign(new Error('Select a supported accounting category.'),{status:400});return{category,originalCategory:t.originalCategory||t.category,isPnl:Boolean(PNL[category]),confidence:1,classificationMethod:'manual',classificationReason:reason||`Manually corrected from ${t.category} to ${category}.`,needsReview:category==='Needs Review',reviewed:category!=='Needs Review',correction:{fromCategory:t.category,toCategory:category,reason,correctedBy,correctedAt:now}};}
+module.exports={makeCorrection};
