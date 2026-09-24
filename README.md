@@ -70,7 +70,6 @@ finz-review-app/
 │   ├── services/                  # Import, categories, P&L, corrections, analyst, AI
 │   ├── scripts/seed.js             # Optional seed from bundled CSV
 │   ├── tests/                      # Jest and Supertest tests
-│   ├── .env.example                # API/database settings template
 │   ├── package.json
 │   └── server.js
 ├── package.json                    # Root convenience scripts
@@ -156,19 +155,23 @@ This installs server and client packages separately. If you only want to install
 
 ### 2. Configure the API
 
-From the repository root, create the local environment file:
+From the repository root, create or open the local environment file:
 
 ```powershell
-Copy-Item server/.env.example server/.env
+if (-not (Test-Path server/.env)) { New-Item -ItemType File server/.env | Out-Null }
+notepad server/.env
 ```
 
-Edit server/.env and set FINZ_MONGODB_URI. The example defaults to a local database:
+Add these settings. The URI below uses local MongoDB; replace it with the Atlas URI shown below if you use Atlas:
 
 ```env
 FINZ_MONGODB_URI=mongodb://127.0.0.1:27017/finz_review
 PORT=5001
 CLIENT_URL=http://localhost:5173
+FINZ_SEED_FILE=
 ```
+
+Leave FINZ_SEED_FILE blank to use the bundled assignment CSV. The seed script finds it automatically.
 
 For MongoDB Atlas, use the SRV URI copied from **Atlas → Connect → Drivers** and include finz_review as the database name, for example:
 
@@ -178,7 +181,7 @@ FINZ_MONGODB_URI=mongodb+srv://<database-user>:<url-encoded-password>@<cluster-h
 
 Before connecting, create an Atlas **database user** and add the machine/server IP to the project's **Network Access** list. The Atlas website account and database user are separate. URL-encode reserved characters in the password (for example, @ becomes %40). Do not use a broadly open IP rule for a deployed database. See the [Atlas connection guide](https://www.mongodb.com/docs/atlas/connect-to-database-deployment/) for current steps.
 
-server/.env is ignored by Git. Do not commit it, paste its connection string into source files, or put database secrets in the browser/client. The repository includes only safe .env.example templates. If a credential was shared or committed, rotate it in Atlas.
+server/.env is ignored by Git. Do not commit it, paste its connection string into source files, or put database secrets in the browser/client. The repository tracks client/.env.example for the optional browser API URL, but intentionally does not track a server environment template. If a credential was shared or committed, rotate it with the relevant provider.
 
 ### 3. Load the sample transactions (optional)
 
