@@ -2,7 +2,7 @@ services:
   - type: web
     name: finz-review-api
     env: node
-    rootDir: finz-review-app/server
+    rootDir: server
     plan: free
     buildCommand: npm install
     startCommand: npm start
@@ -20,7 +20,7 @@ services:
   - type: web
     name: finz-review-client
     env: static
-    rootDir: finz-review-app/client
+    rootDir: client
     buildCommand: npm install && npm run build
     staticPublishPath: dist
     envVars:
