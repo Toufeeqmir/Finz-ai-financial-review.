@@ -327,7 +327,7 @@ Do not commit .env files. Configure secrets through the hosting provider's envir
 | vite is not recognized | Run npm install inside client, then npm run dev. Or run npm run install:all from the repository root. |
 | Cannot find module dotenv | Run npm install inside server (or install both projects from the root), then retry npm start. |
 | Browser says connection refused | Keep the Vite terminal running and open the exact URL Vite prints. Start the API in another terminal for financial data. |
-| UI says API needs attention | Check that MongoDB is running/reachable, then start the API. Test /api/finz/health. |
+| Deployed UI says API needs attention | Confirm the Render API is live and its FINZ_MONGODB_URI points to Atlas. Set Vercel's VITE_API_URL to the Render API base URL (no /api path), then redeploy Vercel. Check /api/finz/health. |
 | MongoDB connection timeout | Verify the Atlas host/user/password, URI-encode reserved password characters, and add the API machine's IP to Atlas Network Access. |
 | Import reports no required columns | Include date, description, and amount columns. Transaction ID, counterparty, and payment method are optional. |
 | Atlas authentication fails | Use a MongoDB **database user**, not the Atlas website login. Rotate any credential shared in chat or committed by mistake. |
