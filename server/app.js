@@ -1,1 +1,41 @@
-const express=require('express'),cors=require('cors'),helmet=require('helmet');const routes=require('./routes/finz');const app=express();app.use(helmet({crossOriginResourcePolicy:false}));app.use(cors({origin:process.env.CLIENT_URL?process.env.CLIENT_URL.split(',').map(x=>x.trim()):true}));app.use(express.json({limit:'32kb'}));const buckets=new Map();app.use('/api/finz',(req,res,next)=>{const k=req.ip||'local',now=Date.now(),b=buckets.get(k);if(!b||now-b.start>=60000)buckets.set(k,{start:now,count:1});else if(++b.count>180)return res.status(429).json({error:'Too many requests. Try again shortly.'});next();},routes);app.use((err,req,res,next)=>{const status=Number(err.status)||(err.code==='LIMIT_FILE_SIZE'?413:err.name==='ValidationError'?400:500);if(status>=500)console.error('FINZ API error:',err.message);res.status(status).json({error:status>=500?'Financial review request failed. Check the API logs.':err.message||'Uploaded file exceeds 10 MB.'});});module.exports=app;
+const express = require('express'),
+  cors = require('cors'),
+  helmet = require('helmet');
+const routes = require('./routes/finz');
+const app = express();
+app.use(helmet({ crossOriginResourcePolicy: false }));
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL ? process.env.CLIENT_URL.split(',').map((x) => x.trim()) : true,
+  })
+);
+app.use(express.json({ limit: '32kb' }));
+const buckets = new Map();
+app.use(
+  '/api/finz',
+  (req, res, next) => {
+    const k = req.ip || 'local',
+      now = Date.now(),
+      b = buckets.get(k);
+    if (!b || now - b.start >= 60000) buckets.set(k, { start: now, count: 1 });
+    else if (++b.count > 180)
+      return res.status(429).json({ error: 'Too many requests. Try again shortly.' });
+    next();
+  },
+  routes
+);
+app.use((err, req, res, next) => {
+  const status =
+    Number(err.status) ||
+    (err.code === 'LIMIT_FILE_SIZE' ? 413 : err.name === 'ValidationError' ? 400 : 500);
+  if (status >= 500) console.error('FINZ API error:', err.message);
+  res
+    .status(status)
+    .json({
+      error:
+        status >= 500
+          ? 'Financial review request failed. Check the API logs.'
+          : err.message || 'Uploaded file exceeds 10 MB.',
+    });
+});
+module.exports = app;

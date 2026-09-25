@@ -11,9 +11,8 @@ const apiBaseURL = normalizeApiBaseURL(import.meta.env.VITE_API_URL);
 const missingProductionApiURL = import.meta.env.PROD && !apiBaseURL;
 
 function readErrorMessage(payload) {
-  const detail = payload && typeof payload === 'object'
-    ? payload.error ?? payload.message
-    : payload;
+  const detail =
+    payload && typeof payload === 'object' ? (payload.error ?? payload.message) : payload;
 
   if (typeof detail === 'string' && detail.trim()) return detail.trim();
   if (detail && typeof detail === 'object') {
@@ -38,7 +37,11 @@ function explainApiError(error) {
 
   if (!error?.response) {
     const target = apiBaseURL ? ' at ' + apiBaseURL : '';
-    return 'Could not reach the FINZ API' + target + '. Check that the Render backend is live and VITE_API_URL points to it.';
+    return (
+      'Could not reach the FINZ API' +
+      target +
+      '. Check that the Render backend is live and VITE_API_URL points to it.'
+    );
   }
 
   if (error.response.status === 404) {
@@ -51,25 +54,30 @@ function explainApiError(error) {
 export const finzApi = axios.create({
   baseURL: apiBaseURL,
   timeout: 30000,
-  headers: { Accept: 'application/json' }
+  headers: { Accept: 'application/json' },
 });
 
 finzApi.interceptors.response.use(
-  response => response,
-  error => Promise.reject(new Error(explainApiError(error)))
+  (response) => response,
+  (error) => Promise.reject(new Error(explainApiError(error)))
 );
 
-export const getOverview = () => finzApi.get('/api/finz/overview').then(response => response.data);
-export const previewImport = file => {
+export const getOverview = () =>
+  finzApi.get('/api/finz/overview').then((response) => response.data);
+export const previewImport = (file) => {
   const form = new FormData();
   form.append('file', file);
-  return finzApi.post('/api/finz/imports/preview', form).then(response => response.data);
+  return finzApi.post('/api/finz/imports/preview', form).then((response) => response.data);
 };
 export const confirmImport = (id, allowExternalAI) =>
-  finzApi.post('/api/finz/imports/' + id + '/confirm', { allowExternalAI }).then(response => response.data);
+  finzApi
+    .post('/api/finz/imports/' + id + '/confirm', { allowExternalAI })
+    .then((response) => response.data);
 export const correctTransaction = (id, category, reason) =>
-  finzApi.patch('/api/finz/transactions/' + id, { category, reason }).then(response => response.data);
+  finzApi
+    .patch('/api/finz/transactions/' + id, { category, reason })
+    .then((response) => response.data);
 export const setReviewed = (id, reviewed) =>
-  finzApi.patch('/api/finz/transactions/' + id, { reviewed }).then(response => response.data);
+  finzApi.patch('/api/finz/transactions/' + id, { reviewed }).then((response) => response.data);
 export const askAnalyst = (question, useExternalAI) =>
-  finzApi.post('/api/finz/analyst', { question, useExternalAI }).then(response => response.data);
+  finzApi.post('/api/finz/analyst', { question, useExternalAI }).then((response) => response.data);
