@@ -1,6 +1,13 @@
 import axios from 'axios';
 
-const apiBaseURL = String(import.meta.env.VITE_API_URL || '').trim();
+function normalizeApiBaseURL(value) {
+  let normalized = String(value || '').trim();
+  while (normalized.endsWith('/')) normalized = normalized.slice(0, -1);
+  if (normalized.toLowerCase().endsWith('/api')) normalized = normalized.slice(0, -4);
+  return normalized;
+}
+
+const apiBaseURL = normalizeApiBaseURL(import.meta.env.VITE_API_URL);
 const missingProductionApiURL = import.meta.env.PROD && !apiBaseURL;
 
 function readErrorMessage(payload) {
