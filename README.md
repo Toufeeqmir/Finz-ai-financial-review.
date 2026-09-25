@@ -6,6 +6,7 @@ The project is a prototype for a single restaurant workspace. Its assumptions ar
 
 ## Contents
 
+- [Live project](#live-project)
 - [What the app does](#what-the-app-does)
 - [Technology and architecture](#technology-and-architecture)
 - [Dataset](#dataset)
@@ -18,6 +19,10 @@ The project is a prototype for a single restaurant workspace. Its assumptions ar
 - [Deployment](#deployment)
 - [Security and limitations](#security-and-limitations)
 - [Troubleshooting](#troubleshooting)
+
+## Live project
+
+[Open Finz — NYC Restaurant Financial Review](https://finz-ai-financial-review.vercel.app/)
 
 ## What the app does
 
@@ -309,7 +314,7 @@ render.yaml defines two Render services: an Express API from server and a static
 4. Set the client's VITE_API_URL to the deployed API origin before its static build.
 5. Import the CSV through the web app or run the seed process using a one-off command with the same server environment.
 
-Do not commit .env files. Configure secrets through the hosting provider's environment-variable settings. render.yaml requests secret values rather than embedding them in source. Deployment has not been performed from this repository.
+Do not commit .env files. Configure secrets through the hosting provider's environment-variable settings. render.yaml requests secret values rather than embedding them in source. Live frontend: [Finz — NYC Restaurant Financial Review](https://finz-ai-financial-review.vercel.app/).
 
 ## Security and limitations
 
